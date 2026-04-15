@@ -3,12 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
 	<title>{ifset title}{include title|stripHtml} | {/ifset}Zadej.To Kvalitně</title>
+	<link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 
 <body>
-    <a href="{plink Homepage:Default}">Na začátek</a>
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
 	{include content}
@@ -16,5 +16,8 @@
 	{block scripts}
 	<script async src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
 	{/block}
+	<div class="footer-cleaner">
+		<br>
+	</div>
 </body>
 </html>

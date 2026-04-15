@@ -16,12 +16,12 @@ class Bootstrap
 		$configurator = new Configurator;
 		$appDir = dirname(__DIR__);
 
-		//$configurator->setDebugMode('secret@23.75.345.200'); // enable for your remote IP
-        $configurator->setDebugMode('89.103.128.142');
 		$configurator->enableTracy($appDir . '/log', 'daniel.hejduk@gmail.com');
 
 		$configurator->setTimeZone('Europe/Prague');
 		$configurator->setTempDirectory($appDir . '/temp');
+        $configurator->setDebugMode('89.177.70.112');
+
         if($configurator->isDebugMode()) {
             FileSystem::delete($appDir.'/temp/cache/');
         }

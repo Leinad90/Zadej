@@ -1,0 +1,142 @@
+* {
+    margin: auto;
+    max-width: 100%;
+    text-align: center;
+    vertical-align: middle
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        background: #1D1D1D;
+        filter: invert(100%) contrast(90%) hue-rotate(180deg);
+    }
+}
+
+
+body {
+    background: #3484d2;
+    color: #333;
+    margin: 2em auto;
+    padding: 0 .5em;
+    max-width: max-content;
+}
+
+a,button,input[type=submit] {
+    width: 100%;
+    font-size: 110%;
+    display: block
+}
+
+input[type=submit] {
+    font-weight: 700
+}
+
+p label {
+    border: 1px dotted;
+    border-radius: 50%/100%
+}
+
+label {
+    display: block;
+    padding: .5em
+}
+
+input[type=number],input[type=text] {
+    border: 1px solid;
+    padding: 0;
+    border-radius: 1em;
+    display: block
+}
+
+p {
+    padding: .3em
+}
+
+.bold,a,button {
+    font-weight: 700
+}
+
+td {
+    border-width: 1px
+}
+
+.bold td {
+    border-color: red
+}
+
+:after {
+    content: attr(title)
+}
+
+.right {
+    text-align: right
+}
+
+html {
+    font: 18px/1.3 Georgia,"New York CE",utopia,serif;
+    color: #666;
+    -webkit-text-stroke: 1px transparent;
+    overflow-y: scroll
+}
+
+a {
+    color: #006aeb;
+    padding: 3px 1px
+}
+
+a:active,a:focus,a:hover {
+    background-color: #006aeb;
+    text-decoration: none;
+    color: #fff
+}
+
+h1,h2 {
+    font: inherit;
+    margin: 0
+}
+
+h2 {
+    padding: 1.2em 0
+}
+
+img {
+    border: 0;
+    float: right;
+    margin: 0 0 1em 3em
+}
+
+.footer-cleaner {
+    clear: both;
+    min-height: 100vw;
+    height: 100%
+}
+
+#banner {
+    border-radius: 12px 12px 0 0;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAB5CAMAAADPursXAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGBQTFRFD1CRDkqFDTlmDkF1D06NDT1tDTNZDk2KEFWaDTZgDkiCDTtpDT5wDkZ/DTBVEFacEFOWD1KUDTRcDTFWDkV9DkR7DkN4DkByDTVeDC9TDThjDTxrDkeADkuIDTRbDC9SbsUaggAAAEdJREFUeNqkwYURgAAQA7DH3d3335LSKyxAYpf9vWCpnYbf01qcOdFVXc14w4BznNTjkQfsscAdU3b4wIh9fDVYc4zV8xZgAAYaCMI6vPgLAAAAAElFTkSuQmCC)
+}
+
+h1 {
+    color: #fff;
+    font-size: 50px;
+    line-height: 121px;
+    padding-left: 4%;
+    background: url(https://files.nette.org/images/logo-nette@2.png)no-repeat 95%;
+    background-size: 130px auto;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.9)
+}
+
+@media (max-width:600px) {
+    h1 {
+        background: 0 0;
+        font-size: 40px
+    }
+}
+
+#content {
+    background: #fff;
+    border: 1px solid #eff4f7;
+    border-radius: 0 0 12px 12px;
+    padding: 10px 4%;
+    overflow: hidden
+}

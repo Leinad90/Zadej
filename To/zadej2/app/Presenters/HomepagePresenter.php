@@ -28,13 +28,14 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     public function createComponentForm(): Form {
         $form = new Form($this,'form');
         $form->addText('name','Jméno');
+        //$form->addRadioList('Type','Hra',['solo'=>'Sám','pvp'=>'Vyzvi soupeře']);
         $form->addRadioList('Test', 'Soutěž', $this->getTestsForCheckbox())->setRequired(true);
         $form->addSubmit('sent','Zadat');
         $form->onSuccess[]=function($form, $formData) {$this->processForm($form, $formData);};
         return $form;
     }
     
-    private function processForm(Form $form, \Nette\Utils\ArrayHash $formData)
+    private function processForm(Form $form, \Nette\Utils\ArrayHash $formData): never
     {
         $exploded = explode('?', $formData->Test); 
         $this->redirect($exploded[0], $formData);

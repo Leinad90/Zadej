@@ -24,15 +24,28 @@ class TestPresenter extends Nette\Application\UI\Presenter
 
     public function renderDefault(array|\ArrayAccess $formData = []) 
     {
+        if($formData['type']==='pvp') {
+
+        }
+        $this->getTaskList((int)explode('?', $formData['Test'])[1],$formData['name']);
+    }
+
+    private function getTaskList(?int $class, ?string $name): TaskList
+    {
         $session = $this->getSession(self::SESSION_NAME);
-        if(empty($session->TaskList) || count($session->TaskList)==0 || true) {
-            $session->class = $class = (int)explode('?', $formData['Test'])[1];
-            $diffucityData = $this->getDifucityData($class);
+        if(empty($session->TaskList) || count($session->TaskList)==0 || !$session->TaskList instanceof TaskList) {
+            if($class) {
+                $session->class = $class;
+            }
+            $diffucityData = $this->getDifucityData($session->class);
             $exprs = $diffucityData['exprs'];
             unset($diffucityData['exprs']);
             $session->TaskList = new \App\Tasks\TaskList($exprs, new \App\Tasks\MathTask(),$diffucityData);
-            $session->name = $formData['name'];
+            if($name) {
+                $session->name = $name;
+            }
         }
+        return $session->TaskList;
     }
     
     protected function getDifucityData(int $class) : array
@@ -75,10 +88,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
         $form = new Form();
         $form->addProtection();
         $allowSend = $showResult = false;
-        $taskList = $session->TaskList;
-        if(!$taskList instanceof TaskList) {
-            throw new \Exception('');
-        }
+        $taskList = $this->getTaskList();
         foreach ($taskList as $id =>  $Task) {     
             $elem = $form->addText((string)$id, $Task->getTask());
             if($Task->solved()!==null) {
@@ -96,7 +106,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
                 $elem->setHtmlAttribute('step', $step);
             }
             if( ($regexp = $Task->getRegexp()) ) {
-                $elem->addRule(validator: $form::PATTERN, errorMessage: "Výsledek musí odpovídat masce %s", arg: $regexp);
+                $elem->addRule(validator: $form::Pattern, errorMessage: "Výsledek musí odpovídat masce %s", arg: $regexp);
             }
         }
         if($allowSend) {
