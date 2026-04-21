@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Tasks;
 
 use DivisionByZeroError;
+use Random\RandomException;
 
 /**
  * Description of MathTask
@@ -17,8 +18,6 @@ class MathTask extends ITask {
     private ?float $solved = null;
     
     private string $task;
-    
-    private ?\Nette\Utils\DateTime $solvedOn = null; 
 
     public function __construct(float $min=0, float $max=1, int $operators=2, int $operands=2, private float $step=1) {
         parent::__construct();
@@ -68,7 +67,11 @@ class MathTask extends ITask {
 
     protected function randomNumber(float $min, float $max, float $step=1): float
     {
-        $random = random_int(0, PHP_INT_MAX)/PHP_INT_MAX;
+        try {
+            $random = random_int(0, PHP_INT_MAX) / PHP_INT_MAX;
+        } catch (RandomException $e) {
+            $random = mt_rand() / mt_getrandmax();
+        }
         $diff = $max - $min;
         return $this->round($random*$diff + $min, $step);
     }
@@ -107,9 +110,12 @@ class MathTask extends ITask {
         return "(\+|\-){0,1}[0-9| ]+((\.|,)[0-9| ]+){0,1}";
     }
     
-    public function rank($givenResult) : float 
+    public function rank(mixed $givenResult) : float
     {
         $this->solvedOn = new \Nette\Utils\DateTime();
+        if(!is_numeric($givenResult)) {
+            return $this->solved = 0;
+        }
         $correct= $this->getResult();
         $givenResult = (float)$givenResult;
         if($this->isEqual($givenResult, $correct))  {
@@ -123,12 +129,6 @@ class MathTask extends ITask {
     {
         return abs($a-$b)<$this->getStep();
     }
-
-
-    private function signum(float $a) : int
-    {
-        return $a>0 ? 1 : ($a<0 ? -1 : 0);
-    }
     
     public function solved() : ?float
     {
@@ -139,16 +139,6 @@ class MathTask extends ITask {
     {
         $stringCalc = new \ChrisKonnertz\StringCalc\StringCalc();
         return $stringCalc->calculate($this->getTask());
-    }
-    
-    public function getStartedOn() : \Nette\Utils\DateTime
-    {
-        return $this->startedOn;
-    }
-    
-    public function getSolvedOn() : \Nette\Utils\DateTime
-    {
-        return $this->solvedOn;
     }
     
     public function getStep(): float

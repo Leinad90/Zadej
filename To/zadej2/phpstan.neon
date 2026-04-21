@@ -1,0 +1,9 @@
+parameters:
+    level: max
+    paths:
+        - app
+        - bin
+        - www/index.php
+    universalObjectCratesClasses:
+        - Http\Session
+        - Http\SessionSection

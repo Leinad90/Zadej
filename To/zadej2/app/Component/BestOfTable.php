@@ -14,10 +14,10 @@ class BestOfTable extends Control
         //parent::__construct($parent, $name);
     }
 
-    public function render()
+    public function render(): void
     {
-        $this->template->solvers=$this->solvers->getAll();
-        $this->template->render(__DIR__.'/templates/bestOfTable.latte');
+        $this->getTemplate()->solvers=$this->solvers->getAll();
+        $this->getTemplate()->setFile(__DIR__.'/templates/bestOfTable.latte')->render();
     }
 
 }

@@ -12,8 +12,9 @@ namespace App\Tasks;
 abstract class ITask {
     
     use \Nette\SmartObject;
-    
-    const TYPE_NUMBER = "number";
+
+    protected ?\Nette\Utils\DateTime $solvedOn = null;
+    const string TYPE_NUMBER = "number";
     
     protected \Nette\Utils\DateTime $startedOn;
 
@@ -29,7 +30,7 @@ abstract class ITask {
     
     abstract public function getRegexp() : ?string;
 
-    abstract public function rank($givenResult) : float;
+    abstract public function rank(mixed $givenResult) : float;
     
     abstract public function solved() : ?float;
     
@@ -38,7 +39,15 @@ abstract class ITask {
         return NULL;
     }
 
-    abstract public function getResult() : mixed;
-    
-    abstract public function getStartedOn() : \DateTime; 
+    abstract public function getResult() : string|float|int;
+
+    public function getStartedOn() : \Nette\Utils\DateTime
+    {
+        return $this->startedOn;
+    }
+
+    public function getSolvedOn() : ?\Nette\Utils\DateTime
+    {
+        return $this->solvedOn;
+    }
 }

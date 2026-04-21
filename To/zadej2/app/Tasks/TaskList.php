@@ -6,21 +6,25 @@ namespace App\Tasks;
 
 
 use InvalidArgumentException;
+use Nette\Utils\ArrayList;
 
 /**
- *
- * @author daniel Hejduk
+ * @extends ArrayList<ITask>
  */
-class TaskList extends \Nette\Utils\ArrayList
+class TaskList extends ArrayList
 {
     private ?\Nette\Utils\DateTime $solvedOn = null;
     
     private \Nette\Utils\DateTime $startedOn; 
 
+    /**
+     * @param int $count
+     * @param ITask $task
+     * @param mixed $params
+     */
     public function __construct(int $count, ITask $task, array $params=[])
     {
         $str = $task::class;
-        bdump($params);
         for($i=0; $i<$count; $i++) {
             $this[] = new $str(...$params);
         }
@@ -42,7 +46,7 @@ class TaskList extends \Nette\Utils\ArrayList
     }
 
     public function getStartedOn() : \Nette\Utils\DateTime {
-        $return = \Nette\Utils\DateTime::from('01-01-0001');
+        $return = $this->startedOn;
         foreach ($this as $task)
         {
             $actual = $task->getStartedOn();
@@ -67,7 +71,12 @@ class TaskList extends \Nette\Utils\ArrayList
     }
 
     public function getSolvingTime() : float {
-        return $this->timeDiffSec($this->getSolvedOn(), $this->getStartedOn());
+        $solvedOn = $this->getSolvedOn();
+        if($solvedOn === null) {
+            trigger_error("Task not solved yet.");
+            return INF;
+        }
+        return $this->timeDiffSec($solvedOn, $this->getStartedOn());
 
     }
 
@@ -76,7 +85,7 @@ class TaskList extends \Nette\Utils\ArrayList
         $interval = $a->diff($b);
         $seconds = 0;
 
-        $days = $interval->format('%r%a');
+        $days = (int)$interval->format('%r%a');
         $seconds += 24 * 60 * 60 * $days;
 
         $hours = $interval->format('%H');
@@ -85,7 +94,7 @@ class TaskList extends \Nette\Utils\ArrayList
         $minutes = $interval->format('%i');
         $seconds += 60 * $minutes;
 
-        $seconds += $interval->format('%s');
+        $seconds += (int)$interval->format('%s');
 
         $usec = $interval->format('%f')/(1000*1000);
 

@@ -22,10 +22,6 @@ class Bootstrap
 		$configurator->setTempDirectory($appDir . '/temp');
         $configurator->setDebugMode('89.177.70.112');
 
-        if($configurator->isDebugMode()) {
-            FileSystem::delete($appDir.'/temp/cache/');
-        }
-
 		$configurator->createRobotLoader()
 			->addDirectory(__DIR__)
 			->register();

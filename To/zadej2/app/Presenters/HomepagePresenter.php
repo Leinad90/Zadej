@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\Component\BestOfTable;
+use App\DTO\GameSelectData;
 use App\Model\Solvers;
 use Nette;
 use Nette\Application\UI\Form;
@@ -18,7 +19,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
         parent::__construct();
     }
 
-    public function renderDefault()
+    public function renderDefault(): void
     {
         $this->template->form = $this['form'];
         $this->template->tests= $this->getTests();
@@ -31,18 +32,21 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
         //$form->addRadioList('Type','Hra',['solo'=>'Sám','pvp'=>'Vyzvi soupeře']);
         $form->addRadioList('Test', 'Soutěž', $this->getTestsForCheckbox())->setRequired(true);
         $form->addSubmit('sent','Zadat');
-        $form->onSuccess[]=function($form, $formData) {$this->processForm($form, $formData);};
+        $form->onSuccess[]=function(Form $form, GameSelectData $formData): never {$this->processForm($form, $formData);}; /** @phpstan-ignore assign.propertyType (nette magic) */
         return $form;
     }
     
-    private function processForm(Form $form, \Nette\Utils\ArrayHash $formData): never
+    private function processForm(Form $form, GameSelectData $formData): never
     {
         $exploded = explode('?', $formData->Test); 
         $this->redirect($exploded[0], $formData);
     }
 
 
-    protected function getTestsForCheckbox()
+    /**
+     * @return array<string, string>
+     */
+    protected function getTestsForCheckbox(): array
     {
         $return = [];
         foreach ($this->getTests() as $class => $tests) {
@@ -55,7 +59,10 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
         }
         return $return;
     }
-    
+
+    /**
+     * @return array<int, array<string, string>>
+     */
     protected function getTests() : array
     {
         return [
@@ -69,7 +76,6 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
 
     protected function createComponentTable(): BestOfTable
     {
-        $table = new BestOfTable($this->solvers, $this);
-        return $table;
+        return new BestOfTable($this->solvers);
     }
 }
