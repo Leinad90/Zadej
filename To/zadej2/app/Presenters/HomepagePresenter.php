@@ -14,6 +14,8 @@ use Nette\Application\UI\Form;
 class HomepagePresenter extends Nette\Application\UI\Presenter
 {
 
+    const SESSION_NAME = 'TaskList';
+
     public function __construct(protected readonly Solvers $solvers)
     {
         parent::__construct();
@@ -38,7 +40,9 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     
     private function processForm(Form $form, GameSelectData $formData): never
     {
-        $exploded = explode('?', $formData->Test); 
+        $exploded = explode('?', $formData->Test);
+        $session = $this->getSession(self::SESSION_NAME);
+        $session->set('TaskList', null);
         $this->redirect($exploded[0], $formData);
     }
 

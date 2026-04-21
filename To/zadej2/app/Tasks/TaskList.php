@@ -20,7 +20,7 @@ class TaskList extends ArrayList
     /**
      * @param int $count
      * @param ITask $task
-     * @param mixed $params
+     * @param array<mixed> $params
      */
     public function __construct(int $count, ITask $task, array $params=[])
     {

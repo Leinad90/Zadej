@@ -36,10 +36,14 @@ class TestPresenter extends Nette\Application\UI\Presenter
     {
         $session = $this->getSession(self::SESSION_NAME);
         if(empty($session->TaskList) || !$session->TaskList instanceof TaskList) {
-            if($class) {
+            if($class !== null) {
                 $session->set('class',$class);
             }
-            $diffucityData = $this->getDifucityData($session['class']);
+            $classValue = $session['class'];
+            if (!is_int($classValue)) {
+                throw new \InvalidArgumentException('Class must be an integer.');
+            }
+            $diffucityData = $this->getDifucityData($classValue);
             $exprs = $diffucityData['exprs'];
             unset($diffucityData['exprs']);
             $session->TaskList = new TaskList($exprs, new MathTask(),$diffucityData);
@@ -101,7 +105,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
                 $showResult = true;
                 $elem->disabled = true;
                 $elem->caption .= ' = '.$Task->getResult();
-                $elem->addError($Task->solved().' '.'bodů'); 
+                $elem->addError((string)$Task->solved().' '.'bodů');
             } else {
                 $allowSend = true;
             }
@@ -122,13 +126,13 @@ class TestPresenter extends Nette\Application\UI\Presenter
         }
         if($showResult) {
             $form->addText('total','Celkem: ')->setDisabled()->addError($session->rank.' '.'bodů');
-            $form->addText('time','Čas: ')->setDisabled()->setDefaultValue($taskList->getStartedOn()->format('H:i:s,v').' - '.$taskList->getSolvedOn()->format('H:i:s,v'))->addError($taskList->getSolvingTime().' '.'sekund');
+            $form->addText('time','Čas: ')->setDisabled()->setDefaultValue($taskList->getStartedOn()->format('H:i:s,v').' - '.$taskList?->getSolvedOn()->format('H:i:s,v'))->addError($taskList->getSolvingTime().' '.'sekund');
         }
 		$form->onSuccess[] = [$this, 'formSucceeded'];
 		return $form;
 	}
     
-   public function formSucceeded(Form $form, \Nette\Utils\ArrayHash $formData): void
+   public function formSucceeded(Form $form, array $formData): void
 	{
         $session = $this->getSession(self::SESSION_NAME);
         $taskList = $session->TaskList;
@@ -136,9 +140,19 @@ class TestPresenter extends Nette\Application\UI\Presenter
             throw new \Exception('');
         }
         $session->rank = $rank = $taskList->rank($formData);
+        $nameValue = $session->name;
+        $classValue = $session->class;
+        if (!is_string($nameValue)) {
+            trigger_error('Name is not string');
+            $nameValue = '';
+        }
+        if (!is_int($classValue)) {
+            trigger_error('Class is not int');
+            $classValue = 0;
+        }
         $row = [
-            'name' => (string)$session->name,
-            'class' => (int)$session->class,
+            'name' => $nameValue,
+            'class' => $classValue,
             'time' => $taskList->getSolvingTime(),
             'points' => $rank
         ];
@@ -146,7 +160,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
         $this->redirect('rank',$formData);
 	}
     
-    public function renderRank(\ArrayAccess|array $formData): void
+    public function renderRank(array $formData): void
     {
         $this['form']->setDefaults($formData);
     }
