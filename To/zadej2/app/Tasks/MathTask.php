@@ -87,11 +87,10 @@ class MathTask extends ITask {
     }
 
 
-    protected function createOperator(int $difucity):string
+    protected function createOperator(int $difficulty):string
     {
         $operators = '+-*/^';
-        $index = random_int(0, $difucity);
-        bdump($index);
+        $index = random_int(0, $difficulty);
         return $operators[$index];
     }
 

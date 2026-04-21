@@ -70,7 +70,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
             1=>['Test:default?1'=>'Sčítání od jedné do desíti'],
             2=>['Test:default?2'=>'Sčítání a odčítání od jedné do sta'],
             3=>['Test:default?3'=>'Sčítání, odčítání a násobení od mínus sta do sta'],
-            4=>['Test:default?3'=>'Sčítání, odčítání, násobení a dělení od mínus sta do sta']
+            4=>['Test:default?4'=>'Sčítání, odčítání, násobení a dělení od mínus sta do sta']
         ];
     }
 

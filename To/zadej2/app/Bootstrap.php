@@ -20,7 +20,6 @@ class Bootstrap
 
 		$configurator->setTimeZone('Europe/Prague');
 		$configurator->setTempDirectory($appDir . '/temp');
-        $configurator->setDebugMode('89.177.70.112');
 
 		$configurator->createRobotLoader()
 			->addDirectory(__DIR__)

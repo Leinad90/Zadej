@@ -117,7 +117,7 @@ class TestPresenter extends Nette\Application\UI\Presenter
         }
         if($allowSend) {
             $form->addText('started_on','Zadáno')->setDisabled()->setDefaultValue($taskList->getStartedOn()->format('H:i:s,v'))->setHtmlId('started_on');
-            $form->addText('actual_time','Aktuální čas')->setDefaultValue(date('H:I:S,v'))->setDisabled()->setHtmlId('actual_time');
+            $form->addText('actual_time','Aktuální čas')->setDefaultValue(date('H:i:s,v'))->setDisabled()->setHtmlId('actual_time');
             $form->addSubmit("sent", "Vyhodnotit");
         }
         if($showResult) {
